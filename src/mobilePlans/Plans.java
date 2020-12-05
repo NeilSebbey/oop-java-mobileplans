@@ -9,19 +9,19 @@ public class Plans {
     private int planId;
     private String name;
     private String description;
-    private String operator;
+    private int operatorId;
     private int minutes;
     private int texts;
     private double dataGB;
     private double pricePM;
 
-    public Plans() { this(0,"Not available","Not available","Not available",0,0,0,0); }
+    public Plans() { this(0,"Not available","Not available",0,0,0,0,0); }
 
-    public Plans (int planId, String name, String description, String operator, int minutes, int texts, double dataGB, double pricePM) {
+    public Plans (int planId, String name, String description, int operatorId, int minutes, int texts, double dataGB, double pricePM) {
         setPlanId(planId);
         setName(name);
         setDescription(description);
-        setOperator(operator);
+        setOperatorId(operatorId);
         setMinutes(minutes);
         setTexts(texts);
         setDataGB(dataGB);
@@ -52,12 +52,12 @@ public class Plans {
         this.description = description;
     }
 
-    public String getOperator() {
-        return operator;
+    public int getOperatorId() {
+        return operatorId;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public void setOperatorId(int operatorId) {
+        this.operatorId = operatorId;
     }
 
     public int getMinutes() {
