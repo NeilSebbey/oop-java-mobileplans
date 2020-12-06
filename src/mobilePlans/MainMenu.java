@@ -1,27 +1,46 @@
 package mobilePlans;
-/* Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
-   OOP CA 2 - due for Sat, 5th Dec 2020 */
+//MainMenu.java
+/** Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
+ * OOP CA 2 - due for Sat, 5th Dec 2020
+ * @author  Neil Sebbey
+ * @version 1.0
+ * @since   14-11-2020  */
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MainMenu extends JFrame implements ActionListener {
-
-    private JMenu plansMenu, customersMenu, operatorsMenu, reportingMenu;
+    /*****************************************************
+     *    Code from a sample program in Problem Solving Session (Wk 8)
+     *    Title:    RestaurantApp.java, lines 35-44
+     *    Author: John Brosnan & DJ
+     *    Site owner/sponsor:  NA
+     *    Date: 15/11/2020
+     *    Code version:  edited 15 November 2020
+     *    Availability:  X:\Object Oriented Programming\ProblemSolving\ProblemSolving8
+     *                   \problemsolvingweek8\exercisea\RestaurantApp.java (Accessed 20/11/2020)
+     *    Modified:  Code refactored (Identifiers renamed)
+     *****************************************************/
+    // code
+    private JMenu plansMenu, customersMenu, operatorsMenu, programMenu;
     private JLabel welcomeMsg, progImg;
     private JPanel wlcMain;
 
-    ArrayList<Plans> plans = new ArrayList<>();
-    ArrayList<Customers> customers = new ArrayList<>();
-    //private Plans plans;
-    //private Customers customers;
+    ArrayList<Plan> plans = new ArrayList<>();
+    ArrayList<Customer> customers = new ArrayList<>();
+    ArrayList<Operator> operators = new ArrayList<>();
+    Plan plan;
+    Customer customer;
+    Operator operator;
 
     public MainMenu() {
         setTitle("Mobile Plans Administration");
-        setSize(350,250);
+        setSize(350, 250);
         setLocationRelativeTo(null);
         setResizable(false);
 
@@ -30,9 +49,10 @@ public class MainMenu extends JFrame implements ActionListener {
         Container contentPane = getContentPane();
         setLayout(new FlowLayout());
 
-        //addPlans();
-        //addCustomers();
-        //addOperators();
+        addPlansMenu();
+        addCustomersMenu();
+        addOperatorsMenu();
+        addProgramMenu();
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -41,15 +61,525 @@ public class MainMenu extends JFrame implements ActionListener {
         menuBar.add(plansMenu);
         menuBar.add(customersMenu);
         menuBar.add(operatorsMenu);
-        menuBar.add(reportingMenu);
+        menuBar.add(programMenu);
+
+        wlcMain = new JPanel();
+        wlcMain.add(Box.createVerticalStrut(10));
+        wlcMain.setLayout(new BoxLayout(wlcMain, BoxLayout.Y_AXIS));
+
+        welcomeMsg = new JLabel("Welcome to the Mobile Plans Administration program");
+        welcomeMsg.setFont(new Font("sans-serif", 3, 20));
+        welcomeMsg.setForeground(Color.GREEN);
+
+        welcomeMsg.setAlignmentX(Component.LEFT_ALIGNMENT);
+        wlcMain.add(welcomeMsg);
+        wlcMain.add(Box.createVerticalStrut(30));
+
+        //add images
+        /*******************************************************************
+         *Title: How to center a JFrame on screen
+         *Author: MadProgrammer
+         *Site owner/sponsor: stackoverflow.com
+         *Date: Mar 4 2014
+         *Code Version: Jul 13 2015
+         *Availability: http://stackoverflow.com/questions/22162398/how-to-set-a-background-picture-in-jpanel (Accessed: 27/11/2020)
+         *Modified: Code refactored
+         *******************************************************************/
+
+
+        try {
+            progImg = new JLabel();
+            progImg.setIcon(new ImageIcon(getClass().getResource("icon.png")));
+
+            progImg.setAlignmentX(Component.CENTER_ALIGNMENT);
+            wlcMain.add(progImg);
+        } catch (Exception ex) {
+
+            JOptionPane.showMessageDialog(null, "Invalid Image File in Main Screen");
+        }
+
+        wlcMain.add(Box.createVerticalStrut(30));
+
+        add(wlcMain);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+
+        open();
     }
 
     public static void main(String[] args) {
+        new MainMenu();
+    }
+
+    //Menu Bar Items
+    public void addPlansMenu() {
+        JMenuItem item;
+
+        plansMenu = new JMenu("Plans");
+        plansMenu.setMnemonic(KeyEvent.VK_P);
+
+        item = new JMenuItem("Add Plan");
+        item.setMnemonic(KeyEvent.VK_A);
+        item.addActionListener(this);
+        plansMenu.add(item);
+
+        item = new JMenuItem("Modify Plan");
+        item.setMnemonic(KeyEvent.VK_M);
+        item.addActionListener(this);
+        plansMenu.add(item);
+
+        item = new JMenuItem("Delete Plan");
+        item.setMnemonic(KeyEvent.VK_D);
+        item.addActionListener(this);
+        plansMenu.add(item);
+
+        item = new JMenuItem("View Plans");
+        item.setMnemonic(KeyEvent.VK_V);
+        item.addActionListener(this);
+        plansMenu.add(item);
+    }
+
+    public void addCustomersMenu() {
+        JMenuItem item;
+
+        customersMenu = new JMenu("Customers");
+        customersMenu.setMnemonic(KeyEvent.VK_C);
+
+        item = new JMenuItem("Add Customer");
+        item.setMnemonic(KeyEvent.VK_A);
+        item.addActionListener(this);
+        customersMenu.add(item);
+
+        item = new JMenuItem("Modify Customer");
+        item.setMnemonic(KeyEvent.VK_M);
+        item.addActionListener(this);
+        customersMenu.add(item);
+
+        item = new JMenuItem("Delete Customer");
+        item.setMnemonic(KeyEvent.VK_D);
+        item.addActionListener(this);
+        customersMenu.add(item);
+
+        item = new JMenuItem("View Customers");
+        item.setMnemonic(KeyEvent.VK_V);
+        item.addActionListener(this);
+        customersMenu.add(item);
+    }
+
+    public void addOperatorsMenu() {
+        JMenuItem item;
+
+        operatorsMenu = new JMenu("Operators");
+        operatorsMenu.setMnemonic(KeyEvent.VK_P);
+
+        item = new JMenuItem("Add Operator");
+        item.setMnemonic(KeyEvent.VK_A);
+        item.addActionListener(this);
+        operatorsMenu.add(item);
+
+        item = new JMenuItem("Modify Operator");
+        item.setMnemonic(KeyEvent.VK_M);
+        item.addActionListener(this);
+        operatorsMenu.add(item);
+
+        item = new JMenuItem("Delete Operator");
+        item.setMnemonic(KeyEvent.VK_D);
+        item.addActionListener(this);
+        operatorsMenu.add(item);
+
+        item = new JMenuItem("View Operators");
+        item.setMnemonic(KeyEvent.VK_V);
+        item.addActionListener(this);
+        operatorsMenu.add(item);
+    }
+
+
+    public void addProgramMenu() {
+        //ProgramMenu consists of an Exit button as another way to quit the program
+        JMenuItem item;
+
+        programMenu = new JMenu("Program");
+        programMenu.setMnemonic(KeyEvent.VK_R);
+
+        item = new JMenuItem("About");
+        item.setMnemonic(KeyEvent.VK_A);
+        item.addActionListener(this);
+        programMenu.add(item);
+
+        item = new JMenuItem("Exit");
+        item.setMnemonic(KeyEvent.VK_X);
+        item.addActionListener(this);
+        programMenu.add(item);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (option == JOptionPane.YES_OPTION) {
+                    try {
+                        save();
+                        JOptionPane.showMessageDialog(null, "Data saved successfully", "Saved", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(null, "Not able to save the file");
+                        e1.printStackTrace();
+                    }
+
+                    System.exit(0);
+                }
+            }
+        });
+
+    }
+    // End of Menu Bar Items
+
+    //Save and open data
+    public void save() throws IOException {
+        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("MobilePlans.dat"));
+        os.writeObject(plans);
+        os.writeObject(customers);
+        os.writeObject(operators);
+        os.close();
+        /*
+        os = new ObjectOutputStream(new FileOutputStream("Customers.dat"));
+        os.writeObject(customers);
+        os.close();
+        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("Operators.dat"));
+        os.writeObject(operators);
+        os.close();
+
+         */
+    }
+
+    public void open() {
+        try {
+            File file = new File("MobilePlans.dat");
+            /*File file = new File("Customers.dat");
+            File file = new File("Operators.dat");
+
+             */
+
+            if (file.exists()) {
+
+                ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+                plans = (ArrayList<Plan>) is.readObject();
+                customers = (ArrayList<Customer>) is.readObject();
+                operators = (ArrayList<Operator>) is.readObject();
+                is.close();
+
+                /*
+                ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+                customers = (ArrayList<Customers>) is.readObject();
+                is.close();
+
+                ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+                operators = (ArrayList<Operators>) is.readObject();
+                is.close();
+
+                 */
+
+                JOptionPane.showMessageDialog(null, file.getName() + " file has been loaded successfully into the system", "Open", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                file.createNewFile();
+                JOptionPane.showMessageDialog(null, "File has been created!", "Created " + file.getName() + " file", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (ClassNotFoundException cnfe) {
+            JOptionPane.showMessageDialog(null, "Class not found", "Error", JOptionPane.ERROR_MESSAGE);
+            cnfe.printStackTrace();
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+            fnfe.printStackTrace();
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Problem reading from the file", "Error", JOptionPane.ERROR_MESSAGE);
+            ioe.printStackTrace();
+        }
+    }
+
+    //Plans Functions
+    public void addPlan() {
+        String planIdAS;
+        String name;
+        String description;
+        String operatorIdAS;
+        String minutesAS;
+        String textsAS;
+        String dataGBAS;
+        String pricePMAS;
+
+        /*****************************************************
+         *    Title:    What does the “Integer” in “Integer.parseInt()” do? (lines 3-4)
+         *    Author: Roman
+         *    Site owner/sponsor:  stackoverflow.com
+         *    Date: 01/02/2020
+         *    Code version:  edited 30 November 2020 at 01:22
+         *    Availability:  https://stackoverflow.com/questions/59923097/what-does-the-integer-in-integer-parseint-do (Accessed 28 November 2020)
+         *    Modified:  Code refactored (Identifiers renamed)
+         *****************************************************/
+        // code
+        planIdAS = JOptionPane.showInputDialog("Please enter Plan ID");
+        int planId = Integer.parseInt(planIdAS);
+        name = JOptionPane.showInputDialog("Enter name");
+        description = JOptionPane.showInputDialog("Enter description");
+        operatorIdAS = JOptionPane.showInputDialog("Enter Operator ID");
+        int operatorId = Integer.parseInt(operatorIdAS);
+        minutesAS = JOptionPane.showInputDialog("Enter minutes of calls");
+        int minutes = Integer.parseInt(minutesAS);
+        textsAS = JOptionPane.showInputDialog("Enter amount of texts");
+        int texts = Integer.parseInt(textsAS);
+        dataGBAS = JOptionPane.showInputDialog("Enter amount of data in GB");
+        double dataGB = Double.parseDouble(dataGBAS);
+        pricePMAS = JOptionPane.showInputDialog("Enter price per month");
+        double pricePM = Double.parseDouble(pricePMAS);
+        // End of refactored code
+
+        plan = new Plan(planId, name, description, operatorId, minutes, texts, dataGB, pricePM);
+        plans.add(plan);
+
+        JOptionPane.showMessageDialog(null, "Plan - " + name + " - has been added!", "Plan added",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void modifyPlan() {
+
+    }
+
+    public void deletePlan() {
+
+    }
+
+    public void viewPlans() {
+
+    }
+
+
+    public void addCustomer() {
+        String custIdAS;
+        String surname;
+        String forename;
+        String email;
+        String address;
+        String city;
+        String county;
+        String eircode;
+        String planIdAS;
+
+        custIdAS = JOptionPane.showInputDialog("Please enter a customer ID");
+        int custId = Integer.parseInt(custIdAS);
+        surname = JOptionPane.showInputDialog("Please enter customer's Surname");
+        forename = JOptionPane.showInputDialog("Enter customer's Forename");
+        email = JOptionPane.showInputDialog("Enter customer's Email address");
+        address = JOptionPane.showInputDialog("Enter customer's Home address");
+        city = JOptionPane.showInputDialog("Enter customer's City");
+        county = JOptionPane.showInputDialog("Enter customer's county");
+        eircode = JOptionPane.showInputDialog("Enter customer's Eircode");
+        planIdAS = JOptionPane.showInputDialog("Enter customer's plan");
+        int planId = Integer.parseInt(planIdAS);
+
+
+        customer = new Customer(custId, surname, forename, email, address, city, county, eircode, planId);
+        customers.add(customer);
+
+        JOptionPane.showMessageDialog(null, "Customer, " + forename + " " + surname +
+        ", ID: " + custIdAS + ", added to the system!","Customer Added", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void modifyCustomer() {
+        ArrayList<Customer> foundCustomers = new ArrayList<Customer>();
+        String searchEmail = JOptionPane.showInputDialog("Please enter a customer's email address to amend/modify a customer's details");
+
+        for(Customer cu: customers)
+            if(cu.getEmail().toLowerCase().contains(searchEmail.toLowerCase()))
+                foundCustomers.add(cu);
+
+            String text="";
+
+            for (Customer cu : foundCustomers)
+                if (cu != null) {
+                    text += cu + "\n";
+
+                }
+
+            int searchID = Integer.parseInt(JOptionPane.showInputDialog("The following customers match your Email Search\n\n" + text +
+                    "\n\nEnter the ID of the customer your want to amend/modify"));
+
+            Customer customerToModify=null;
+
+            for (Customer cu : foundCustomers)
+                if (cu != null && cu.getCustId()==searchID)
+                    customerToModify = cu;
+
+            String modifyChoice = JOptionPane.showInputDialog("The details of the customer you wish to amend/modify are: \n\n" +
+            customerToModify + "\n\n1. Amend Name\n2. Amend Email\n3.Amend Address\n4. Amend Operator ID\n5.Cancel Amendment");
+
+            int modifyChoiceAI = Integer.parseInt(modifyChoice);
+
+            while(modifyChoiceAI<1 || modifyChoiceAI > 5) {
+                modifyChoice = JOptionPane.showInputDialog("The details of the customer you wish to amend/modify are: \n\n" +
+                customerToModify + "\n\n1. Amend Name\n2. Amend Email\n3.Amend Address\n4. Amend Operator ID\n5.Cancel Amendment" +
+                "\n\nInvalid choice entered! You must select options betwen 1 and 5");
+
+                modifyChoiceAI = Integer.parseInt(modifyChoice);
+            }
+
+            switch(modifyChoice){
+                case "1":
+                    String newSurname = JOptionPane.showInputDialog("Please enter the new surname");
+                    customerToModify.setSurname(newSurname);
+
+                    String newForename = JOptionPane.showInputDialog("Please enter the new surname");
+                    customerToModify.setForename(newForename);
+
+                    break;
+
+                case "2":
+                    String newEmail = JOptionPane.showInputDialog("Please enter the new email address of the customer");
+                    customerToModify.setEmail(newEmail);
+
+                    break;
+
+                case "3":
+                    String newAddress = JOptionPane.showInputDialog("Please enter customer's new address");
+                    customerToModify.setAddress(newAddress);
+
+                    String newCity = JOptionPane.showInputDialog("Please enter customer's new city");
+                    customerToModify.setCity(newCity);
+
+                    String newCounty = JOptionPane.showInputDialog("Please enter customer's new county");
+                    customerToModify.setCounty(newCounty);
+
+                    String newEircode = JOptionPane.showInputDialog("Please enter customer's new Eircode");
+                    customerToModify.setEircode(newEircode);
+
+                    break;
+
+                case "4":
+                    String newPlanId = JOptionPane.showInputDialog("Please enter customer's new operator ID:" +
+                    "\n\n--- Plan IDs for each Mobile Operator ---" + "\n1x - Vodafone" + "\n2x - Three" +
+                    "\n3x - Eir/GoMo" + "\n4x - Tesco Mobile" + "\n5x - 48" + "\n\nx1 - x3 (Prepay Plans)" +
+                    "x4 - x9 (Bill Pay & SIM Only <x7 - x9> Plans");
+                    int newPlanIdAI = Integer.parseInt(newPlanId);
+                    customerToModify.setPlanId(newPlanIdAI);
+
+                    break;
+            }
+            JOptionPane.showMessageDialog(null,"Customer details are modified!",
+                    "Customer Details Modified",JOptionPane.INFORMATION_MESSAGE);
+            foundCustomers.clear();
+    }
+
+    public void deleteCustomer() {
+        ArrayList<Customer> foundCustomers = new ArrayList<Customer>();
+        String searchEmail = JOptionPane.showInputDialog("Please enter the email address of the customer you wish to delete");
+
+        for(Customer cu: customers)
+            if(cu.getEmail().toLowerCase().contains(searchEmail.toLowerCase()))
+                foundCustomers.add(cu);
+
+        String text="";
+
+        for (Customer cu : foundCustomers)
+            if (cu != null) {
+                text += cu + "\n";
+            }
+
+        int searchID = Integer.parseInt(JOptionPane.showInputDialog("The following customers matched your Email Search phrase\n\n" + text +
+                "\n\nPlease enter the ID of the customer you want to be deleted"));
+
+        Customer customerToDelete=null;
+
+        for (Customer cu : foundCustomers)
+            if (cu != null && cu.getCustId()==searchID)
+                customerToDelete = cu;
+
+        int deleteChoice = JOptionPane.showConfirmDialog(null,"The details of the customer you wish to delete are:\n\n" +
+                customerToDelete + "\n\nAre you sure you wish to delete this customer?","Confirm deleting Customer Details",JOptionPane.YES_NO_CANCEL_OPTION);
+
+        if(deleteChoice==JOptionPane.YES_OPTION) {
+            customers.remove(customerToDelete);
+            JOptionPane.showMessageDialog(null,"The details of this customer have been removed from the system.",
+                    "Customer Details Removed",JOptionPane.INFORMATION_MESSAGE);
+        } else
+            JOptionPane.showMessageDialog(null,"The details of this customer are not removed from the system." +
+                    " This process has been cancelled.","Customer Not Deleted",JOptionPane.INFORMATION_MESSAGE);
+
+        foundCustomers.clear();
+    }
+
+    public void viewCustomers() {
+
+        }
+    }
+
+    /// IN PROGRESS
+
+
+    public void addOperator() {
+
+    }
+
+    public void modifyOperator() {
+
+    }
+
+    public void deleteOperator() {
+
+    }
+
+    public void viewOperators() {
+
+    }
+
+    public void aboutProgram() {
+        JOptionPane.showMessageDialog(null, "Mobile Plans Administration Program" +
+                        "\nVersion 1.0 \nCreated by: \nNeil Sebbey - Software Development Student, IT Tralee\n\n(C) 2020",
+                "About this Program", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void exitProgram() {
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //Menu Bar Actions
+        String menuName = e.getActionCommand();
 
+        //Plans functionality
+        if (menuName == "Add Plan") {
+            addPlan();
+        } else if (menuName == "Modify Plan") {
+            modifyPlan();
+        } else if (menuName == "Delete Plan") {
+            deletePlan();
+        } else if (menuName == "View Plans") {
+            viewPlans();
+
+            // Customers functionality
+        } else if (menuName == "Add Customer") {
+            addCustomer();
+        } else if (menuName == "Modify Customer") {
+            modifyCustomer();
+        } else if (menuName == "Delete Customer") {
+            deleteCustomer();
+        } else if (menuName == "View Customers") {
+            viewCustomers();
+
+            //Operators functionality
+        } else if (menuName == "Add Operator") {
+            addOperator();
+        } else if (menuName == "Modify Operator") {
+            modifyOperator();
+        } else if (menuName == "Delete Operator") {
+            deleteOperator();
+        } else if (menuName == "View Operators") {
+            viewOperators();
+
+            //Program functionality
+        } else if (menuName == "About") {
+            aboutProgram();
+        } else if (menuName == "Exit") {
+            exitProgram();
+        }
     }
 }

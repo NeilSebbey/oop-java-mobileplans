@@ -1,11 +1,14 @@
 package mobilePlans;
-//Plans.java
-/* Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
+//Plan.java
+/** Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
  * OOP CA 2 - due for Sat, 5th Dec 2020
  * @author  Neil Sebbey
+ * @version 1.0
  * @since   14-11-2020  */
 
-public class Plans {
+import java.io.*;
+
+public class Plan implements Serializable {
     private int planId;
     private String name;
     private String description;
@@ -15,9 +18,20 @@ public class Plans {
     private double dataGB;
     private double pricePM;
 
-    public Plans() { this(0,"Not available","Not available",0,0,0,0,0); }
+    /** No-argument constrctor */
+    public Plan() { this(0,"Not available","Not available",0,0,0,0,0); }
 
-    public Plans (int planId, String name, String description, int operatorId, int minutes, int texts, double dataGB, double pricePM) {
+    /** 8-argument constructor
+     * @param planId The ID number that identifies a mobile plan
+     * @param name The name of a plan
+     * @param description The description of a plan
+     * @param operatorId The ID number for an operator that promotes the plan
+     * @param minutes The minutes allocated for a plan
+     * @param texts The texts allocated for a plan
+     * @param dataGB The data allowance (in GB) allocated for a plan
+     * @param pricePM The price for a plan per month
+     */
+    public Plan(int planId, String name, String description, int operatorId, int minutes, int texts, double dataGB, double pricePM) {
         setPlanId(planId);
         setName(name);
         setDescription(description);
@@ -28,10 +42,12 @@ public class Plans {
         setPricePM(pricePM);
     }
 
+    /** Accessor methods to return (get) parameters*/
     public int getPlanId() {
         return planId;
     }
 
+    /** Mutator methods to set parameters*/
     public void setPlanId(int planId) {
         this.planId = planId;
     }
@@ -90,5 +106,12 @@ public class Plans {
 
     public void setPricePM(double pricePM) {
         this.pricePM = pricePM;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Plan ID: %3d\nName: %s\nDescription: %s\nOperator ID: %3d\nMinutes: %5d\nTexts: %5d" +
+                        "\nData (GB): %.2f\nPrice: %.2f",getPlanId(),getName(),getDescription(),getOperatorId(),getMinutes(),
+                getTexts(),getDataGB(),getPricePM());
     }
 }

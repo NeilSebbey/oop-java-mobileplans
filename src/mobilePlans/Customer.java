@@ -1,6 +1,14 @@
 package mobilePlans;
+//Customer.java
+/** Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
+ * OOP CA 2 - due for Sat, 5th Dec 2020
+ * @author  Neil Sebbey
+ * @version 1.0
+ * @since   14-11-2020  */
 
-public class Customers {
+import java.io.*;
+
+public class Customer implements Serializable {
     private int custId;
     private String surname;
     private String forename;
@@ -11,9 +19,22 @@ public class Customers {
     private String eircode;
     private int planId;
 
-    public Customers() { this(0,"Not available","Not available","Not available","Not available","Not available","Not available","N/A",0); }
 
-    public Customers (int custId, String surname, String forename, String email, String address, String city, String county, String eircode, int planId) {
+    /** No-argument constructor */
+    public Customer() { this(0,"Not available","Not available","Not available","Not available","Not available","Not available","N/A",0); }
+
+    /** 9-argument constructor
+     * @param custId The ID number that identifies a customer
+     * @param surname The surname of a customer
+     * @param forename The forename of a customer
+     * @param email The email address of a customer
+     * @param address The home address of a customer
+     * @param city The city where the customer lives
+     * @param county The county where the customer resides
+     * @param eircode The Eircode of the customer
+     * @param planId The Plan ID used to identify the plan that the customer has signed up to
+     */
+    public Customer(int custId, String surname, String forename, String email, String address, String city, String county, String eircode, int planId) {
         setCustId(custId);
         setSurname(surname);
         setForename(forename);
@@ -25,10 +46,12 @@ public class Customers {
         setPlanId(planId);
     }
 
+    /** Accessor methods to return (get) parameters*/
     public int getCustId() {
         return custId;
     }
 
+    /** Mutator methods to set parameters*/
     public void setCustId(int custId) {
         this.custId = custId;
     }
@@ -95,5 +118,12 @@ public class Customers {
 
     public void setPlanId(int planId) {
         this.planId = planId;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Surname: %s\nForename: %s\nEmail: %s\nAddress: %s\nCity: %s\nCounty: %s" +
+                "\nEircode: %s\nPlan ID: %3d",getSurname(),getForename(),getEmail(),getAddress(),getCity(),
+                getCounty(),getEircode(),getPlanId());
     }
 }
