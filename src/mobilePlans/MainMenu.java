@@ -1,6 +1,6 @@
 package mobilePlans;
 //MainMenu.java
-/** Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
+/* Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
  * OOP CA 2 - due for Sat, 5th Dec 2020
  * @author  Neil Sebbey
  * @version 1.0
@@ -31,6 +31,7 @@ public class MainMenu extends JFrame implements ActionListener {
     private JLabel welcomeMsg, progImg;
     private JPanel wlcMain;
 
+    /** Array Lists */
     ArrayList<Plan> plans = new ArrayList<>();
     ArrayList<Customer> customers = new ArrayList<>();
     ArrayList<Operator> operators = new ArrayList<>();
@@ -38,9 +39,10 @@ public class MainMenu extends JFrame implements ActionListener {
     Customer customer;
     Operator operator;
 
+    /** Main Menu parameters*/
     public MainMenu() {
         setTitle("Mobile Plans Administration");
-        setSize(350, 250);
+        setSize(550, 350);
         setLocationRelativeTo(null);
         setResizable(false);
 
@@ -68,12 +70,12 @@ public class MainMenu extends JFrame implements ActionListener {
         wlcMain.setLayout(new BoxLayout(wlcMain, BoxLayout.Y_AXIS));
 
         welcomeMsg = new JLabel("Welcome to the Mobile Plans Administration program");
-        welcomeMsg.setFont(new Font("sans-serif", 3, 20));
+        welcomeMsg.setFont(new Font("sans-serif", 3, 16));
         welcomeMsg.setForeground(Color.GREEN);
 
-        welcomeMsg.setAlignmentX(Component.LEFT_ALIGNMENT);
+        welcomeMsg.setAlignmentX(Component.CENTER_ALIGNMENT);
         wlcMain.add(welcomeMsg);
-        wlcMain.add(Box.createVerticalStrut(30));
+        wlcMain.add(Box.createVerticalStrut(15));
 
         //add images
         /*******************************************************************
@@ -98,7 +100,7 @@ public class MainMenu extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Invalid Image File in Main Screen");
         }
 
-        wlcMain.add(Box.createVerticalStrut(30));
+        wlcMain.add(Box.createVerticalStrut(20));
 
         add(wlcMain);
 
@@ -112,7 +114,8 @@ public class MainMenu extends JFrame implements ActionListener {
         new MainMenu();
     }
 
-    //Menu Bar Items
+    /** Menu Bar Items
+     ** -- Plans Menu -- */
     public void addPlansMenu() {
         JMenuItem item;
 
@@ -140,6 +143,7 @@ public class MainMenu extends JFrame implements ActionListener {
         plansMenu.add(item);
     }
 
+    /** -- Customers Menu -- */
     public void addCustomersMenu() {
         JMenuItem item;
 
@@ -167,6 +171,7 @@ public class MainMenu extends JFrame implements ActionListener {
         customersMenu.add(item);
     }
 
+    /** -- Operators Menu -- */
     public void addOperatorsMenu() {
         JMenuItem item;
 
@@ -194,7 +199,7 @@ public class MainMenu extends JFrame implements ActionListener {
         operatorsMenu.add(item);
     }
 
-
+    /** -- Program Menu -- */
     public void addProgramMenu() {
         //ProgramMenu consists of an Exit button as another way to quit the program
         JMenuItem item;
@@ -295,6 +300,7 @@ public class MainMenu extends JFrame implements ActionListener {
             ioe.printStackTrace();
         }
     }
+    //End of Save and Open data functions
 
     //Plans Functions
     public void addPlan() {
@@ -317,17 +323,20 @@ public class MainMenu extends JFrame implements ActionListener {
          *    Modified:  Code refactored (Identifiers renamed)
          *****************************************************/
         // code
-        planIdAS = JOptionPane.showInputDialog("Please enter Plan ID");
+        planIdAS = JOptionPane.showInputDialog(" --- Plan IDs --- " + "\n1x - Vodafone\n2x - Three\n3x - Eir/GoMo" +
+                "\n4x - Tesco Mobile\n5x - 48\n\nx1-x3 (Prepay Plans)\nx4-x9 (Bill Pay & SIM-only plans)" +
+                "\n\nPlease enter Plan ID: ");
         int planId = Integer.parseInt(planIdAS);
         name = JOptionPane.showInputDialog("Enter name");
         description = JOptionPane.showInputDialog("Enter description");
-        operatorIdAS = JOptionPane.showInputDialog("Enter Operator ID");
+        operatorIdAS = JOptionPane.showInputDialog(" --- Operator IDs --- " + "\n1 - Vodafone\n2 - Three\n3 - Eir/GoMo" +
+                "\n4 - Tesco Mobile\n5 - 48" + "\n\nEnter Operator ID: ");
         int operatorId = Integer.parseInt(operatorIdAS);
-        minutesAS = JOptionPane.showInputDialog("Enter minutes of calls");
+        minutesAS = JOptionPane.showInputDialog("Enter minutes of calls (for unlimited, please enter 10000): ");
         int minutes = Integer.parseInt(minutesAS);
-        textsAS = JOptionPane.showInputDialog("Enter amount of texts");
+        textsAS = JOptionPane.showInputDialog("Enter amount of texts (for unlimited, please enter 10000): ");
         int texts = Integer.parseInt(textsAS);
-        dataGBAS = JOptionPane.showInputDialog("Enter amount of data in GB");
+        dataGBAS = JOptionPane.showInputDialog("Enter amount of data in GB (for unlimited, please enter 80.00): ");
         double dataGB = Double.parseDouble(dataGBAS);
         pricePMAS = JOptionPane.showInputDialog("Enter price per month");
         double pricePM = Double.parseDouble(pricePMAS);
@@ -352,7 +361,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
     }
 
-
+    // Customers Functions
     public void addCustomer() {
         String custIdAS;
         String surname;
@@ -456,8 +465,8 @@ public class MainMenu extends JFrame implements ActionListener {
                 case "4":
                     String newPlanId = JOptionPane.showInputDialog("Please enter customer's new operator ID:" +
                     "\n\n--- Plan IDs for each Mobile Operator ---" + "\n1x - Vodafone" + "\n2x - Three" +
-                    "\n3x - Eir/GoMo" + "\n4x - Tesco Mobile" + "\n5x - 48" + "\n\nx1 - x3 (Prepay Plans)" +
-                    "x4 - x9 (Bill Pay & SIM Only <x7 - x9> Plans");
+                    "\n3x - Eir/GoMo" + "\n4x - Tesco Mobile" + "\n5x - 48" + "\n\nx1-x3 (Prepay Plans)" +
+                    "\nx4-x9 (Bill Pay & SIM Only <x7 - x9> Plans");
                     int newPlanIdAI = Integer.parseInt(newPlanId);
                     customerToModify.setPlanId(newPlanIdAI);
 
@@ -508,14 +517,35 @@ public class MainMenu extends JFrame implements ActionListener {
 
     public void viewCustomers() {
 
-        }
+
     }
 
-    /// IN PROGRESS
 
-
+    // Operators Functions
     public void addOperator() {
+        String operatorIdAS;
+        String name;
+        String prePay;
+        String billPay;
+        String simOnly;
+        String MVNO;
 
+        operatorIdAS = JOptionPane.showInputDialog("Enter Operator ID: ");
+        int operatorId = Integer.parseInt(operatorIdAS);
+        name = JOptionPane.showInputDialog("Enter the name of the operator: ");
+        prePay = JOptionPane.showInputDialog("Enter Yes or No if the operator offers Prepay Plans: ");
+        billPay = JOptionPane.showInputDialog("Enter Yes or No if the operator offers Bill Pay Plans: ");
+        simOnly = JOptionPane.showInputDialog("Enter Yes or No if the operator offers SIM-only Plans: ");
+        MVNO = JOptionPane.showInputDialog("A Mobile Virtual Network Operator is a mobile service provider that " +
+                "\ndoes not own infrastructure. Vodafone, Three and Eir are Mobile \nNetwork Operators (MNO) that own " +
+                "infrastructure." + "\n\nEnter Yes or No if the operator is an MVNO, " +
+            "i.e. running off a main \nnetwork (example: Tesco Mobile running off Three's network): ");
+
+        operator = new Operator(operatorId, name, prePay, billPay, simOnly, MVNO);
+        operators.add(operator);
+
+        JOptionPane.showMessageDialog(null, "Operator - " + name + " (ID: " + operatorIdAS +
+            ") - has been added!", "Operator added", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void modifyOperator() {
@@ -530,6 +560,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
     }
 
+    // Program Menu Functions
     public void aboutProgram() {
         JOptionPane.showMessageDialog(null, "Mobile Plans Administration Program" +
                         "\nVersion 1.0 \nCreated by: \nNeil Sebbey - Software Development Student, IT Tralee\n\n(C) 2020",
@@ -537,7 +568,19 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public void exitProgram() {
+        int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirmation", JOptionPane.YES_NO_OPTION);
 
+        if (option == JOptionPane.YES_OPTION) {
+            try {
+                save();
+                JOptionPane.showMessageDialog(null, "Data saved successfully", "Saved", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(null, "Not able to save the file");
+                e1.printStackTrace();
+            }
+
+            System.exit(0);
+        }
     }
 
     @Override
