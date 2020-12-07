@@ -126,12 +126,14 @@ public class Plan implements Serializable {
         this.dataGB = dataGB;
     }
 
-    /** Accessor methods to get the data allowance (in GB) allocated for a plan
-     * @return the data allowance (in GB) allocated for a plan */
+    /** Accessor methods to get the price for a plan per month
+     * @return the price for a plan per month */
     public double getPricePM() {
         return pricePM;
     }
 
+    /** Mutator methods to set the price for a plan per month
+     * @param pricePM The price for a plan per month */
     public void setPricePM(double pricePM) {
         this.pricePM = pricePM;
     }

@@ -36,52 +36,74 @@ public class Operator implements Serializable{
         setMVNO(MVNO);
     }
 
-    /** Accessor methods to return (get) parameters*/
+    /** Accessor methods to return (get) the ID number that identifies an operator
+     * @return the ID number that identifies an operator */
     public int getOperatorId() {
         return operatorId;
     }
 
-    /** Mutator methods to set parameters*/
+    /** Mutator methods to set the ID number that identifies an operator
+     * @param operatorId The ID number that identifies an operator */
     public void setOperatorId(int operatorId) {
         this.operatorId = operatorId;
     }
 
+    /** Accessor methods to return (get) the name of an operator
+     * @return the name of an operator */
     public String getName() {
         return name;
     }
 
+    /** Mutator methods to set the name of an operator
+     * @param name The name of an operator */
     public void setName(String name) {
         this.name = name;
     }
 
+    /** Accessor methods to return (get) the status on whether the operator offers Prepay plans
+     * @return the status on whether the operator offers Prepay plans */
     public String getPrePay() {
         return prePay;
     }
 
+    /** Mutator methods to set the status on whether the operator offers Prepay plans
+     * @param prePay This indicates whether the operator offers Prepay plans */
     public void setPrePay(String prePay) {
         this.prePay = prePay;
     }
 
+    /** Accessor methods to return (get) the status on whether the operator offers Bill Pay plans
+     * @return the status on whether the operator offers Bill Pay plans */
     public String getBillPay() {
         return billPay;
     }
 
+    /** Mutator methods to set the status on whether the operator offers Bill Pay plans
+     * @param billPay This indicates whether the operator offers Bill Pay plans */
     public void setBillPay(String billPay) {
         this.billPay = billPay;
     }
 
+    /** Accessor methods to return (get) the status on whether the operator offers SIM-only (Bill) plans
+     * @return the status on whether the operator offers SIM-only (Bill) plans */
     public String getSimOnly() {
         return simOnly;
     }
 
+    /** Mutator methods to set the status on whether the operator offers SIM-only (Bill) plans
+     * @param simOnly This indicates whether the operator offers SIM-only (Bill) plans */
     public void setSimOnly(String simOnly) {
         this.simOnly = simOnly;
     }
 
+    /** Accessor methods to return (get) the status on whether the operator (Mobile Virtual Network Operator) is running off another network
+     * @return the status on whether the operator (Mobile Virtual Network Operator) is running off another network */
     public String getMVNO() {
         return MVNO;
     }
 
+    /** Mutator methods to set the status on whether the operator (Mobile Virtual Network Operator) is running off another network
+     * @param MVNO This indicates if an operator (Mobile Virtual Network Operator) is running off another network */
     public void setMVNO(String MVNO) {
         this.MVNO = MVNO;
     }

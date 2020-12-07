@@ -46,76 +46,110 @@ public class Customer implements Serializable {
         setPlanId(planId);
     }
 
-    /** Accessor methods to return (get) parameters*/
+    /** Accessor methods to return (get) the ID number that identifies a customer
+     * @return the ID number that identifies a customer */
     public int getCustId() {
         return custId;
     }
 
-    /** Mutator methods to set parameters*/
+    /** Mutator methods to set the ID number that identifies a customer
+     * @param custId The ID number that identifies a customer */
     public void setCustId(int custId) {
         this.custId = custId;
     }
 
+    /** Accessor methods to return (get) the surname of a customer
+     * @return the surname of a customer */
     public String getSurname() {
         return surname;
     }
 
+    /** Mutator methods to set the surname of a customer
+     * @param surname The surname of a customer */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /** Accessor methods to return (get) the forename of a customer
+     * @return the forename of a customer */
     public String getForename() {
         return forename;
     }
 
+    /** Mutator methods to set the forename of a customer
+     * @param forename The surname of a customer */
     public void setForename(String forename) {
         this.forename = forename;
     }
 
+    /** Accessor methods to return (get) the email address of a customer
+     * @return the email address of a customer */
     public String getEmail() {
         return email;
     }
 
+    /** Mutator methods to set the email address of a customer
+     * @param email The email address of a customer */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /** Accessor methods to return (get) the home address of a customer
+     * @return the home address of a customer */
     public String getAddress() {
         return address;
     }
 
+    /** Mutator methods to set the home address of a customer
+     * @param address The home address of a customer */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /** Accessor methods to return (get) the city where the customer lives
+     * @return the city where the customer lives */
     public String getCity() {
         return city;
     }
 
+    /** Mutator methods to set the city where the customer lives
+     * @param city The city where the customer lives */
     public void setCity(String city) {
         this.city = city;
     }
 
+    /** Accessor methods to return (get) the county where the customer resides
+     * @return the county where the customer resides */
     public String getCounty() {
         return county;
     }
 
+    /** Mutator methods to set the county where the customer resides
+     * @param county The county where the customer resides */
     public void setCounty(String county) {
         this.county = county;
     }
 
+    /** Accessor methods to return (get) the Eircode of the customer
+     * @return the Eircode of the customer */
     public String getEircode() {
         return eircode;
     }
 
+    /** Mutator methods to set the Eircode of the customer
+     * @param eircode The Eircode of the customer */
     public void setEircode(String eircode) {
         this.eircode = eircode;
     }
 
+    /** Accessor methods to return (get) the Plan ID used to identify the plan that the customer has signed up to
+     * @return the Plan ID used to identify the plan that the customer has signed up to */
     public int getPlanId() {
         return planId;
     }
 
+    /** Mutator methods to set the Plan ID used to identify the plan that the customer has signed up to
+     * @param planId The Plan ID used to identify the plan that the customer has signed up to */
     public void setPlanId(int planId) {
         this.planId = planId;
     }

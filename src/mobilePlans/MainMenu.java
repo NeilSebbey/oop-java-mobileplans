@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -235,7 +234,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
     //Save and open data
     public void save() throws IOException {
-        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("MobilePlans.dat"));
+        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("src/mobilePlans/MobilePlans.dat"));
         os.writeObject(plans);
         os.writeObject(customers);
         os.writeObject(operators);
@@ -253,7 +252,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
     public void open() {
         try {
-            File file = new File("MobilePlans.dat");
+            File file = new File("src/mobilePlans/MobilePlans.dat");
             /*File file = new File("Customers.dat");
             File file = new File("Operators.dat");
 
@@ -308,7 +307,7 @@ public class MainMenu extends JFrame implements ActionListener {
         String pricePMAS;
 
         /*****************************************************
-         *    Title:    What does the “Integer” in “Integer.parseInt()” do? (lines 3-4)
+         *    Title:    What does the "Integer" in "Integer.parseInt()" do? (lines 3-4)
          *    Author: Roman
          *    Site owner/sponsor:  stackoverflow.com
          *    Date: 01/02/2020
