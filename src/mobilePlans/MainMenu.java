@@ -78,17 +78,6 @@ public class MainMenu extends JFrame implements ActionListener {
         wlcMain.add(Box.createVerticalStrut(15));
 
         //add images
-        /*******************************************************************
-         *Title: How to center a JFrame on screen
-         *Author: MadProgrammer
-         *Site owner/sponsor: stackoverflow.com
-         *Date: Mar 4 2014
-         *Code Version: Jul 13 2015
-         *Availability: http://stackoverflow.com/questions/22162398/how-to-set-a-background-picture-in-jpanel (Accessed: 27/11/2020)
-         *Modified: Code refactored
-         *******************************************************************/
-
-
         try {
             progImg = new JLabel();
             progImg.setIcon(new ImageIcon(getClass().getResource("icon.png")));
@@ -206,6 +195,11 @@ public class MainMenu extends JFrame implements ActionListener {
 
         programMenu = new JMenu("Program");
         programMenu.setMnemonic(KeyEvent.VK_R);
+
+        item = new JMenuItem("Find Plans");
+        item.setMnemonic(KeyEvent.VK_F);
+        item.addActionListener(this);
+        programMenu.add(item);
 
         item = new JMenuItem("About");
         item.setMnemonic(KeyEvent.VK_A);
@@ -777,6 +771,16 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public void deleteOperator() {
+        /*****************************************************
+         *    Title:  How can i search an arrray of object with a value in java (lines 3-5)
+         *    Author: SMA
+         *    Site owner/sponsor:  stackoverflow.com
+         *    Date: December 2014
+         *    Code version:  edited 6 December 2014 at 12:28
+         *    Availability:  https://stackoverflow.com/questions/27331557/how-can-i-search-an-arrray-of-object-with-a-value-in-java (Accessed 02 November 2020)
+         *    Modified:  Code refactored (Identifiers renamed)
+         *****************************************************/
+        // code
         ArrayList<Operator> foundOperators = new ArrayList<Operator>();
         String searchIDOpDelAS = JOptionPane.showInputDialog("Please enter an operator's ID to delete");
         int searchIDOpDel = Integer.parseInt(searchIDOpDelAS);
@@ -784,6 +788,7 @@ public class MainMenu extends JFrame implements ActionListener {
         for(Operator op: operators)
             if(op.getOperatorId()==searchIDOpDel)
                 foundOperators.add(op);
+            // end of refactored code
 
         String text="";
 
@@ -843,6 +848,68 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     // Program Menu Functions
+    public void findPlan() {
+        ArrayList<Plan> foundPlans = new ArrayList<Plan>();
+        String customerMins = JOptionPane.showInputDialog("Please enter the minimum minutes that the customer needs\n(unlimited = 10000+): ");
+        int customerMinsAI = Integer.parseInt(customerMins);
+
+        String customerTexts = JOptionPane.showInputDialog("Please enter the minimum texts that the customer needs\n(unlimited = 10000+): ");
+        int customerTextsAI = Integer.parseInt(customerTexts);
+
+        String customerDataGB = JOptionPane.showInputDialog("Please enter the minimum data allowance in GB that the customer needs\n(unlimited = 80.00+): ");
+        double customerDataGBAD = Double.parseDouble(customerDataGB);
+
+        String customerPricePM = JOptionPane.showInputDialog("Please enter the minimum price that the customer is willing to pay: ");
+        double customerPricePMAD = Double.parseDouble(customerPricePM);
+
+        for (Plan pl : plans)
+            if(pl.getMinutes()>=customerMinsAI && pl.getTexts()>=customerTextsAI && pl.getDataGB()>=customerDataGBAD && pl.getPricePM()>=customerPricePMAD) {
+                foundPlans.add(pl);
+            }
+
+        String text="";
+
+        for (Plan pl : foundPlans)
+            if (pl != null) {
+                text += pl + "\n";
+            }
+
+        /*****************************************************
+         *    Title:  Adding a Scrollable JTextArea (Java)
+         *    Author: kleopatra
+         *    Site owner/sponsor:  stackoverflow.com
+         *    Date: January 2012
+         *    Code version:  edited 13 January 2012 at 10:47
+         *    Availability:  https://stackoverflow.com/questions/8849063/adding-a-scrollable-jtextarea-java (Accessed 02 November 2020)
+         *    Modified:  Code refactored (Identifiers renamed)
+         *****************************************************/
+        //Code
+        //FRAME
+        JFrame results = new JFrame ();
+        results.setSize(600,450);
+        results.setResizable(false);
+        //
+
+        //TEXT AREA
+        JTextArea resultOut = new JTextArea();
+        resultOut.setSize(550,400);
+
+        resultOut.setLineWrap(true);
+        resultOut.setEditable(false);
+        resultOut.setVisible(true);
+
+        JScrollPane scroll = new JScrollPane (resultOut);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        results.add(scroll);
+        results.setVisible(true);
+        results.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        //End of non-original code
+
+        resultOut.append("There are mobile plans that suit the needs of this customer: \n\n" + text + "\n ");
+    }
+
     public void aboutProgram() {
         JOptionPane.showMessageDialog(null, "Mobile Plans Administration Program" +
                         "\nVersion 1.0 \nCreated by: \nNeil Sebbey - Software Development Student, IT Tralee\n\n(C) 2020",
@@ -901,6 +968,8 @@ public class MainMenu extends JFrame implements ActionListener {
             viewOperators();
 
             //Program functionality
+        } else if (menuName == "Find Plans") {
+            findPlan();
         } else if (menuName == "About") {
             aboutProgram();
         } else if (menuName == "Exit") {
