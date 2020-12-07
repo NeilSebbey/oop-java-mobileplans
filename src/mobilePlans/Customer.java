@@ -1,6 +1,6 @@
 package mobilePlans;
 //Customer.java
-/** Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
+/* Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
  * OOP CA 2 - due for Sat, 5th Dec 2020
  * @author  Neil Sebbey
  * @version 1.0
@@ -122,8 +122,8 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Surname: %s\nForename: %s\nEmail: %s\nAddress: %s\nCity: %s\nCounty: %s" +
-                "\nEircode: %s\nPlan ID: %3d",getSurname(),getForename(),getEmail(),getAddress(),getCity(),
+        return String.format("Customer ID: %3d\nSurname: %s\nForename: %s\nEmail: %s\nAddress: %s\nCity: %s\nCounty: %s" +
+                "\nEircode: %s\nPlan ID: %3d",getCustId(),getSurname(),getForename(),getEmail(),getAddress(),getCity(),
                 getCounty(),getEircode(),getPlanId());
     }
 }

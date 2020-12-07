@@ -273,7 +273,7 @@ public class MainMenu extends JFrame implements ActionListener {
                 operators = (ArrayList<Operator>) is.readObject();
                 is.close();
 
-                /*
+                /* ///This is no longer needed one file can load three array lists
                 ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
                 customers = (ArrayList<Customers>) is.readObject();
                 is.close();
@@ -350,15 +350,152 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public void modifyPlan() {
+        ArrayList<Plan> foundPlans = new ArrayList<Plan>();
+        String searchIDPlanModAS = JOptionPane.showInputDialog("Please enter a plan ID to amend/modify details");
+        int searchIDPlanMod = Integer.parseInt(searchIDPlanModAS);
 
+        for(Plan pl: plans)
+            if(pl.getPlanId()==searchIDPlanMod)
+                foundPlans.add(pl);
+
+        String text="";
+
+        for (Plan pl : foundPlans)
+            if (pl != null) {
+                text += pl + "\n";
+            }
+
+        int searchID = Integer.parseInt(JOptionPane.showInputDialog("The following plan matches your ID Search\n\n" + text +
+                "\n\nEnter the ID of the plan your wish to amend/modify to confirm"));
+
+        Plan planToModify=null;
+
+        for (Plan pl : foundPlans)
+            if (pl != null && pl.getPlanId()==searchID)
+                planToModify = pl;
+
+        String modifyChoice = JOptionPane.showInputDialog("The details of the plan you wish to amend/modify are: \n\n" +
+                planToModify + "\n\n1. Amend Name and Description\n2. Amend Allowances and Price\n3. Amend Operator ID\n4. Cancel Amendment");
+
+        int modifyChoiceAI = Integer.parseInt(modifyChoice);
+
+        while(modifyChoiceAI<1 || modifyChoiceAI > 4) {
+            modifyChoice = JOptionPane.showInputDialog("The details of the plan you wish to amend/modify are: \n\n" +
+                    planToModify + "\n\n1. Amend Name and Description\n2. Amend Allowances and Price\n3. Amend Operator ID\n4. Cancel Amendment" +
+                    "\n\nInvalid choice entered! You must select options betwen 1 and 4");
+
+            modifyChoiceAI = Integer.parseInt(modifyChoice);
+        }
+
+        switch(modifyChoice){
+            case "1":
+                String newName = JOptionPane.showInputDialog("Please enter the new name");
+                planToModify.setName(newName);
+
+                String newDescription = JOptionPane.showInputDialog("Please enter the new description");
+                planToModify.setDescription(newDescription);
+
+                break;
+
+            case "2":
+                String newMinutesAS = JOptionPane.showInputDialog("Please enter new call minutes (10000 = Unlimited)");
+                int newMinutes = Integer.parseInt(newMinutesAS);
+                planToModify.setMinutes(newMinutes);
+
+                String newTextsAS = JOptionPane.showInputDialog("Please enter new texts (10000 = Unlimited)");
+                int newTexts = Integer.parseInt(newTextsAS);
+                planToModify.setTexts(newTexts);
+
+                String newDataGBAS = JOptionPane.showInputDialog("Please enter new data allowance in GB (80.00 = Unlimited)");
+                double newDataGB = Double.parseDouble(newDataGBAS);
+                planToModify.setDataGB(newDataGB);
+
+                String newPricePMAS = JOptionPane.showInputDialog("Please enter new price per month");
+                double newPricePM = Double.parseDouble(newPricePMAS);
+                planToModify.setPricePM(newPricePM);
+
+                break;
+
+            case "3":
+                JOptionPane.showMessageDialog(null,"--- Operator IDs ---" + "\n" +
+                        "1 - Vodafone\n2 - Three\n3 - Eir / GoMo\n4 - Tesco Mobile\n5 - 48\n6 to 9 - Other","Modify Operator ID",JOptionPane.INFORMATION_MESSAGE);
+
+                String newOperatorIdAS = JOptionPane.showInputDialog("Please enter new Operator ID");
+                int newOperatorId = Integer.parseInt(newOperatorIdAS);
+                planToModify.setOperatorId(newOperatorId);
+
+                break;
+        }
+        JOptionPane.showMessageDialog(null,"Plan details are modified!",
+                "Plan Details Modified",JOptionPane.INFORMATION_MESSAGE);
+        foundPlans.clear();
     }
 
     public void deletePlan() {
+        ArrayList<Plan> foundPlans = new ArrayList<Plan>();
+        String searchIDPlanDelAS = JOptionPane.showInputDialog("Please enter an ID number of the plan you wish to delete");
+        int searchIDPlanDel = Integer.parseInt(searchIDPlanDelAS);
 
+        for(Plan pl: plans)
+            if(pl.getPlanId()==searchIDPlanDel)
+                foundPlans.add(pl);
+
+        String text="";
+
+        for (Plan pl : foundPlans)
+            if (pl != null) {
+                text += pl + "\n";
+            }
+
+        int searchID = Integer.parseInt(JOptionPane.showInputDialog("The following plan matched your ID Search phrase\n\n" + text +
+                "\n\nPlease enter the ID of the plan you wish to be deleted to confirm"));
+
+        Plan planToDelete=null;
+
+        for (Plan pl : foundPlans)
+            if (pl != null && pl.getPlanId()==searchID)
+                planToDelete = pl;
+
+        int deleteChoice = JOptionPane.showConfirmDialog(null,"The details of the plan you wish to delete are:\n\n" +
+                planToDelete + "\n\nAre you sure you wish to delete this plan?","Confirm deleting plan Details",JOptionPane.YES_NO_CANCEL_OPTION);
+
+        if(deleteChoice==JOptionPane.YES_OPTION) {
+            plans.remove(planToDelete);
+            JOptionPane.showMessageDialog(null,"The details of this plan have been removed from the system.",
+                    "Plan Details Removed",JOptionPane.INFORMATION_MESSAGE);
+        } else
+            JOptionPane.showMessageDialog(null,"The details of this plan are not removed from the system." +
+                    " This process has been cancelled.","Plan Not Deleted",JOptionPane.INFORMATION_MESSAGE);
+
+        foundPlans.clear();
     }
 
     public void viewPlans() {
+        JComboBox planCombo = new JComboBox();
+        JTextArea output = new JTextArea();
 
+        output.setText("Plan Details:\n\n");
+
+        if(plans.size() < 1) {
+            JOptionPane.showMessageDialog(null,"No plans are stored on the system. Please add a new plan.","Warning",JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            Iterator<Plan> iterator = plans.iterator();
+
+            while(iterator.hasNext()) {
+                planCombo.addItem(iterator.next().getPlanId() + "\n");
+            }
+
+            JOptionPane.showMessageDialog(null,"--- Plan IDs for each operator ---" + "\n" +
+                    "1x - Vodafone\n2x - Three\n3x - Eir / GoMo\n4x - Tesco Mobile\n5x - 48\n\n" + "Prepay Plans - x1-x3" +
+                    "\nBill Pay or SIM-only Plans - x4-x9","View Plans",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,planCombo,"Select plan ID to view details",JOptionPane.PLAIN_MESSAGE);
+
+            int selected = planCombo.getSelectedIndex();
+            output.append(plans.get(selected).toString());
+
+            JOptionPane.showMessageDialog(null,output,"Plan Details",JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     // Customers Functions
@@ -516,8 +653,31 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public void viewCustomers() {
+        JTextArea output = new JTextArea();
 
+        output.setText("Customer Details:\n\n");
 
+        if(customers.size() < 1) {
+            JOptionPane.showMessageDialog(null,"No customers are stored on the system. Please add a new customer.","Warning",JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            ArrayList<Customer> foundCustomers = new ArrayList<Customer>();
+            String searchEmail = JOptionPane.showInputDialog("Please enter the email address of the customer you wish to view");
+
+            for(Customer cu: customers)
+                if(cu.getEmail().toLowerCase().contains(searchEmail.toLowerCase()))
+                    foundCustomers.add(cu);
+
+            String text="";
+
+            for (Customer cu : foundCustomers)
+                if (cu != null) {
+                    text += cu + "\n";
+                }
+
+            JOptionPane.showMessageDialog(null,"The following customers matched your Email Search phrase. The details are:\n\n" + text,
+                    "Customer Details Found",JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
 
@@ -549,15 +709,137 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public void modifyOperator() {
+        ArrayList<Operator> foundOperators = new ArrayList<Operator>();
+        String searchIDOpModAS = JOptionPane.showInputDialog("Please enter an operator's ID to amend/modify details");
+        int searchIDOpMod = Integer.parseInt(searchIDOpModAS);
 
+        for(Operator op: operators)
+            if(op.getOperatorId()==searchIDOpMod)
+                foundOperators.add(op);
+
+        String text="";
+
+        for (Operator op : foundOperators)
+            if (op != null) {
+                text += op + "\n";
+            }
+
+        int searchID = Integer.parseInt(JOptionPane.showInputDialog("The following operator matches your ID Search\n\n" + text +
+                "\n\nEnter the ID of the operator your wish to amend/modify to confirm"));
+
+        Operator operatorToModify=null;
+
+        for (Operator op : foundOperators)
+            if (op != null && op.getOperatorId()==searchID)
+                operatorToModify = op;
+
+        String modifyChoice = JOptionPane.showInputDialog("The details of the operator you wish to amend/modify are: \n\n" +
+                operatorToModify + "\n\n1. Amend Name\n2. Amend Offers\n3. Amend Operator Details\n4. Cancel Amendment");
+
+        int modifyChoiceAI = Integer.parseInt(modifyChoice);
+
+        while(modifyChoiceAI<1 || modifyChoiceAI > 4) {
+            modifyChoice = JOptionPane.showInputDialog("The details of the operator you wish to amend/modify are: \n\n" +
+                    operatorToModify + "\n\n1. Amend Name\n2. Amend Offers\n3. Amend Operator Details\n4. Cancel Amendment" +
+                    "\n\nInvalid choice entered! You must select options betwen 1 and 4");
+
+            modifyChoiceAI = Integer.parseInt(modifyChoice);
+        }
+
+        switch(modifyChoice){
+            case "1":
+                String newName = JOptionPane.showInputDialog("Please enter the new name");
+                operatorToModify.setName(newName);
+
+                break;
+
+            case "2":
+                String newPrePay = JOptionPane.showInputDialog("Please enter Yes or No whether the operator still offers Prepay Plans");
+                operatorToModify.setPrePay(newPrePay);
+
+                String newBillPay = JOptionPane.showInputDialog("Please enter Yes or No whether the operator still offers Bill Pay Plans");
+                operatorToModify.setBillPay(newBillPay);
+
+                String newSimOnly = JOptionPane.showInputDialog("Please enter Yes or No whether the operator still offers SIM Only Plans");
+                operatorToModify.setSimOnly(newSimOnly);
+
+                break;
+
+            case "3":
+                String newMVNO = JOptionPane.showInputDialog("Please enter Yes or No if the operator is a Mobile Virtual Network Operator");
+                operatorToModify.setMVNO(newMVNO);
+
+                break;
+        }
+        JOptionPane.showMessageDialog(null,"Operator details are modified!",
+                "Operator Details Modified",JOptionPane.INFORMATION_MESSAGE);
+        foundOperators.clear();
     }
 
     public void deleteOperator() {
+        ArrayList<Operator> foundOperators = new ArrayList<Operator>();
+        String searchIDOpDelAS = JOptionPane.showInputDialog("Please enter an operator's ID to delete");
+        int searchIDOpDel = Integer.parseInt(searchIDOpDelAS);
 
+        for(Operator op: operators)
+            if(op.getOperatorId()==searchIDOpDel)
+                foundOperators.add(op);
+
+        String text="";
+
+        for (Operator op : foundOperators)
+            if (op != null) {
+                text += op + "\n";
+            }
+
+        int searchID = Integer.parseInt(JOptionPane.showInputDialog("The following operator matches your ID Search phrase\n\n" + text +
+                "\n\nPlease enter the ID of the operator you wish to be deleted to confirm"));
+
+        Operator operatorToDelete=null;
+
+        for (Operator op : foundOperators)
+            if (op != null && op.getOperatorId()==searchID)
+                operatorToDelete = op;
+
+        int deleteChoice = JOptionPane.showConfirmDialog(null,"The details of the operator you wish to delete are:\n\n" +
+                operatorToDelete + "\n\nAre you sure you wish to delete this operator?","Confirm deleting operator Details",JOptionPane.YES_NO_CANCEL_OPTION);
+
+        if(deleteChoice==JOptionPane.YES_OPTION) {
+            operators.remove(operatorToDelete);
+            JOptionPane.showMessageDialog(null,"The details of this operator have been removed from the system.",
+                    "Operator Details Removed",JOptionPane.INFORMATION_MESSAGE);
+        } else
+            JOptionPane.showMessageDialog(null,"The details of this operator are not removed from the system." +
+                    " This process has been cancelled.","Operator Not Deleted",JOptionPane.INFORMATION_MESSAGE);
+
+        foundOperators.clear();
     }
 
     public void viewOperators() {
+        JComboBox operatorCombo = new JComboBox();
+        JTextArea output = new JTextArea();
 
+        output.setText("Operator Details:\n\n");
+
+        if(operators.size() < 1) {
+            JOptionPane.showMessageDialog(null,"No operators are stored on the system. Please add a new operator.","Warning",JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            Iterator<Operator> iterator = operators.iterator();
+
+            while(iterator.hasNext()) {
+                operatorCombo.addItem(iterator.next().getOperatorId() + "\n");
+            }
+
+            JOptionPane.showMessageDialog(null,"--- Operator IDs ---" + "\n" +
+                    "1 - Vodafone\n2 - Three\n3 - Eir / GoMo\n4 - Tesco Mobile\n5 - 48\n6 to 9 - Other","View Operators",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,operatorCombo,"Select plan ID to view details",JOptionPane.PLAIN_MESSAGE);
+
+            int selected = operatorCombo.getSelectedIndex();
+            output.append(operators.get(selected).toString());
+
+            JOptionPane.showMessageDialog(null,output,"Operator Details",JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     // Program Menu Functions
