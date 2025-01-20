@@ -1,6 +1,6 @@
 package mobilePlans;
 //MainMenu.java
-/* Neil Sebbey (T00198203) - Software Development Stream (Yr. 2)
+/* Neil Sebbey - Software Development Stream (Yr. 2)
  * OOP CA 2 - due for Sat, 5th Dec 2020
  * @author  Neil Sebbey
  * @version 1.0
@@ -17,7 +17,7 @@ public class MainMenu extends JFrame implements ActionListener {
     /*****************************************************
      *    Code from a sample program in Problem Solving Session (Wk 8)
      *    Title:    RestaurantApp.java, lines 35-44
-     *    Author: John Brosnan & DJ
+     *    Author: IT Tralee Lecturer
      *    Site owner/sponsor:  NA
      *    Date: 15/11/2020
      *    Code version:  edited 15 November 2020
@@ -234,7 +234,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
     //Save and open data
     public void save() throws IOException {
-        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("src/mobilePlans/MobilePlans.dat"));
+        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("MobilePlans.dat"));
         os.writeObject(plans);
         os.writeObject(customers);
         os.writeObject(operators);
@@ -252,7 +252,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
     public void open() {
         try {
-            File file = new File("src/mobilePlans/MobilePlans.dat");
+            File file = new File("MobilePlans.dat");
             /*File file = new File("Customers.dat");
             File file = new File("Operators.dat");
 
